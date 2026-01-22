@@ -14,5 +14,15 @@ vitaltracker/
     ├─ script.js
     └─ style.css
 
-App.py and Init_databse.py - initializes and stores login information for authentication. 
 
+Download Git (https://git-scm.com/install/windows).
+Download and open Visual Studio Code.
+Open or create a folder to save the files to.
+Open a terminal and run the following:
+    git clone https://github.com/maddienicolej/vitaltracker.git
+
+
+OR
+
+
+Navigate to Vital Tracker Repo and download the zip folder ( located under <>Code )
