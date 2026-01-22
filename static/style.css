@@ -5,12 +5,18 @@
     font-family: 'Times New Roman', Times, serif;
 }
 
-body{
+body {
+    margin: 0px;
+    padding: 10px;
+    background: linear-gradient(to right, #e2e2e2, #FBCEB1);
+}
+
+body#login {
     display:flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: linear-gradient(to right, #e2e2e2, #c9d6ff);
+    background: linear-gradient(to right, #e2e2e2, #FBCEB1);
     color: #333;
 }
 
@@ -51,21 +57,39 @@ input {
 }
 
 button {
-    width: 100%;
-    padding: 12px;
-    background: #cfcbff;
+    width: 15%;
+    padding: 20px;
+    background: #ffffff;
     border-radius: 6px;
-    border: none;
+    border-color: #000000;
     cursor: pointer;
     font-size: 16px;
-    color: #fff;
+    color: #000000;
     font-weight: 500;
     margin-bottom: 20px;
     transition: 0.5s;
 }
 
 button:hover {
-    background: #809cf8;
+    background: #FBCEB1;
+}
+
+button#auth {
+    width: 100%;
+    padding: 12px;
+    background: #FBCEB1;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    color: #000000;
+    font-weight: 500;
+    margin-bottom: 20px;
+    transition: 0.5s;
+}
+
+button#auth:hover {
+    background: #f6bb84;
 }
 
 p {
@@ -103,8 +127,9 @@ section{
     text-align: left;
 }
 .navbar ul{
+    width: 100%;
     list-style-type: none;
-    background-color:#3c3c3c;
+    background-color:#ffffff;
     padding: 0px;
     margin: 0px;
     overflow: hidden;
@@ -112,14 +137,14 @@ section{
     justify-content: center;
 }
 .navbar a{
-    color: white;
+    color: rgb(0, 0, 0);
     text-decoration: none;
     padding: 15px;
     display: block;
     text-align: center;
 }
 .navbar a:hover{
-    background-color:#000000;
+    background-color:#FBCEB1;
 }
 .navbar li{
     float:left

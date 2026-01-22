@@ -3,7 +3,7 @@
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title> Vital Tracker Web Server</title>
-        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"">
     </head>
     <header>
         <h1> Vital Tracker</h1> 
@@ -11,10 +11,10 @@
     <body>
         <nav class="navbar">
             <ul>
-                <li><a href="home.html">Home</a></li>
-                <li><a href="ekg.html">EKG</a></li>
-                <li><a href="temp.html">Body Temperature</a></li>
-                <li><a href="hr.html">Heart Rate</a></li>
+                <li><a href="{{ url_for('home') }}">Home</a></li>
+                <li><a href="{{ url_for('ekg') }}">EKG</a></li>
+                <li><a href="{{ url_for('temp') }}">Body Temperature</a></li>
+                <li><a href="{{ url_for('hr') }}">Heart Rate</a></li>
             </ul>
 
         </nav>
@@ -25,7 +25,7 @@
                 <option value="P1">Madison Jones</option>
                 <option value="P2">Mariah Williams</option>
             </select>
-            <input type="submit" value="Submit">
+            <button type="submit" name="Submit">Submit
         </main>
         <p>
             This is the EKG page. EKG data will be recieved from the ESP32 and graphically displayed here.<br>

@@ -28,7 +28,7 @@ def login_required(f):
 @app.route("/")
 def index():
     if "user_id" in session:
-        return redirect(url_for("dashboard"))
+        return redirect(url_for("home"))
     return render_template("index.html")
 
 
@@ -46,7 +46,7 @@ def login():
 
     if user and bcrypt.check_password_hash(user["password_hash"], password):
         session["user_id"] = user["id"]
-        return redirect(url_for("dashboard"))
+        return redirect(url_for("home"))
 
     return redirect(url_for("index"))
 
@@ -78,29 +78,39 @@ def register():
 
     session["user_id"] = user["id"]  # create session
 
-    # Redirect to dashboard
-    return redirect(url_for("dashboard"))
+    # Redirect to home
+    return redirect(url_for("home"))
 
 
-# ---- Dashboard ----
-@app.route("/dashboard")
+# ---- Dashboard Home Page ----
+@app.route("/vitaltracker")
 @login_required
-def dashboard():
+def home():
     db = get_db()
     user = db.execute("SELECT * FROM users WHERE id = ?", (session["user_id"],)).fetchone()
     return render_template("home.html")
 
+@app.route("/vitaltracker/ekg")
+@login_required
+def ekg():
+    return render_template("ekg.html")
+
+@app.route("/vitaltracker/temp")
+@login_required
+def temp():
+    return render_template("temp.html")
+
+@app.route("/vitaltracker/heart-rate")
+@login_required
+def hr():
+    return render_template("hr.html")
 
 @app.route("/logout")
 def logout():
     session.clear()
     return redirect(url_for("index"))
 
-@app.route("/")
-def index():
-    if "user_id" in session:
-        return redirect(url_for("dashboard"))
-    return render_template("index.html")
+
 
 if __name__ == "__main__":
     app.run(debug=True)
