@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Vital Tracker Web Server</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body id="authentication">
+    <div class="container">
+        <div class="form-box" id="login-form">
+            <form id="login">
+                <h2>Login</h2>
+                <input type="email" id="login-email" placeholder="Email" required>
+                <input type="password" id="login-password" placeholder="Password" required>
+                <button id="auth" type="submit" name="login">Login</button>
+                <p> Don't have an account? <a href="#" id="to-register">Register</a></p>
+            </form>
+        </div>
+    
+        <div class="form-box active" id="register-form">
+            <form id="register">
+                <h2>Register</h2>
+                <input type="email" id="register-email" placeholder="Email" required>
+                <input type="password" id="register-password" placeholder="Password" required>
+                <button id="auth" type="submit" name="register">Register</button>
+                <p> Already have an account? <a href="#" id="to-login">Login</a></p>
+            </form>
+        </div>
+    </div>
+    
+    <script type="module" src="{{ url_for('static', filename='auth.js') }}"></script>
+</body>
+
+</html>

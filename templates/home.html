@@ -15,6 +15,13 @@
                 <li><a href="{{ url_for('ekg') }}">EKG</a></li>
                 <li><a href="{{ url_for('temp') }}">Body Temperature</a></li>
                 <li><a href="{{ url_for('hr') }}">Heart Rate</a></li>
+                <div class="dropdown">
+                    <button class="dropbtn">Account</button>
+                    <div class="dropdown-content" id="drop-options">
+                        <a href="#" class="item" data-value="account">Account Details</a>
+                        <a href="#" class="item" data-value="logout" id="logout">Logout</a>
+                    </div>
+                </div>
             </ul>
 
         </nav>
@@ -27,6 +34,7 @@
                 Fall detection will be implemented through pop-up windows.
             </p>
         </main>
-      
+
+      <script type="module" src="{{ url_for('static', filename='index.js') }}"></script>
     </body>
 </html>

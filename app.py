@@ -1,18 +1,15 @@
 from flask import Flask, render_template, request, redirect, session, url_for
-import sqlite3
-from flask_bcrypt import Bcrypt
 from functools import wraps
+import firebase_admin
+from firebase_admin import credentials, auth
+
+cred = credentials.Certificate("key.json")
+firebase_admin.initialize_app(cred)
+
 
 app = Flask(__name__)
 app.secret_key = "change_this_to_a_random_secret"
-bcrypt = Bcrypt(app)
 
-
-# ---- Database helper ----
-def get_db():
-    conn = sqlite3.connect("users.db")
-    conn.row_factory = sqlite3.Row
-    return conn
 
 def login_required(f):
     @wraps(f)
@@ -29,65 +26,23 @@ def login_required(f):
 def index():
     if "user_id" in session:
         return redirect(url_for("home"))
-    return render_template("index.html")
+    return render_template("auth.html")
 
 
-# ---- Login ----
-@app.route("/login", methods=["POST"])
-def login():
-    email = request.form["email"]
-    password = request.form["password"]
+@app.route("/sessionLogin", methods=["POST"])
+def session_login():
+    token = request.json["token"]
 
-    db = get_db()
-    user = db.execute(
-        "SELECT * FROM users WHERE email = ?",
-        (email,)
-    ).fetchone()
+    decoded = auth.verify_id_token(token)
+    session["user_id"] = decoded["uid"]
 
-    if user and bcrypt.check_password_hash(user["password_hash"], password):
-        session["user_id"] = user["id"]
-        return redirect(url_for("home"))
-
-    return redirect(url_for("index"))
-
-
-# ---- Register ----
-@app.route("/register", methods=["POST"])
-def register():
-    email = request.form["email"]
-    password = request.form["password"]
-
-    hashed_pw = bcrypt.generate_password_hash(password).decode("utf-8")
-
-    db = get_db()
-    try:
-        db.execute(
-            "INSERT INTO users (email, password_hash) VALUES (?, ?)",
-            (email, hashed_pw)
-        )
-        db.commit()
-    except sqlite3.IntegrityError:
-        # Email already exists
-        return "Email already exists"  # optionally redirect back with a flash message
-
-    # Automatically log in the user after registration
-    user = db.execute(
-        "SELECT * FROM users WHERE email = ?",
-        (email,)
-    ).fetchone()
-
-    session["user_id"] = user["id"]  # create session
-
-    # Redirect to home
-    return redirect(url_for("home"))
+    return {"status": "ok"}
 
 
 # ---- Dashboard Home Page ----
 @app.route("/vitaltracker")
 @login_required
 def home():
-    db = get_db()
-    user = db.execute("SELECT * FROM users WHERE id = ?", (session["user_id"],)).fetchone()
     return render_template("home.html")
 
 @app.route("/vitaltracker/ekg")
