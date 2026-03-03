@@ -11,10 +11,8 @@
     <body>
         <nav class="navbar">
             <ul>
-                <li><a href="{{ url_for('home') }}">Home</a></li>
+                <li><a href="{{ url_for('dashboard') }}">Home</a></li>
                 <li><a href="{{ url_for('ekg') }}">EKG</a></li>
-                <li><a href="{{ url_for('temp') }}">Body Temperature</a></li>
-                <li><a href="{{ url_for('hr') }}">Heart Rate</a></li>
                 <div class="dropdown">
                     <button class="dropbtn">Account</button>
                     <div class="dropdown-content" id="drop-options">
@@ -29,12 +27,14 @@
         <main>
             <h3>Welcome to the Vital Tracker Web Server!</h3>
             <p>
-                This is the Home page. Info about the web server and Vital Tracker device will be added later.<br>
-                Security features will likely be added to adhere to HIPPA laws. <br>
-                Fall detection will be implemented through pop-up windows.
+                Our senior design project focuses on creating a low-cost IoT-enabled patient monitoring system
+                that continuously tracks key vital signs while minimizing disturbances from traditional practices and devices.
+                The system securely transmits real-time data to healthcare providers, allowing nurses and doctors to remotely
+                monitor overnight patients, respond faster to changes, and improve overall patient comfort and care effieciency. <br> <br>
+                For any technical issues with the site, please email [ vitaltracker2026@gmail.com ]
             </p>
         </main>
 
-      <script type="module" src="{{ url_for('static', filename='index.js') }}"></script>
+      <script type="module" src="{{ url_for('static', filename='logout.js') }}"></script>
     </body>
 </html>

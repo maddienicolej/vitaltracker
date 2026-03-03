@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
+import { getAuth, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
 
 const firebaseConfig = initializeApp({
     apiKey: "AIzaSyCiTjrAgUaS7PY2DSuLZctDyGkvop839PQ",
@@ -12,5 +12,6 @@ const firebaseConfig = initializeApp({
 });
 
 const auth = getAuth(firebaseConfig);
-
-export { auth };
+auth.languageCode = 'en'
+const provider = new GoogleAuthProvider();
+export { auth, provider };

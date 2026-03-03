@@ -1,0 +1,198 @@
+//https://vitaltracker-a9d1c-default-rtdb.firebaseio.com/
+#define ENABLE_USER_AUTH
+#define ENABLE_DATABASE
+
+#include <Arduino.h>
+#include <WiFi.h>
+#include <WiFiClientSecure.h>
+#include <FirebaseClient.h>
+#include <Wire.h>
+#include "time.h"
+
+// Network and Firebase credentials
+#define WIFI_SSID "REPLACE_WITH_YOUR_SSID"
+#define WIFI_PASSWORD "REPLACE_WITH_YOUR_PASSWORD"
+
+#define Web_API_KEY "AIzaSyCiTjrAgUaS7PY2DSuLZctDyGkvop839PQ"
+#define DATABASE_URL "https://vitaltracker-a9d1c-default-rtdb.firebaseio.com/"
+#define USER_EMAIL "vitaltracker2026@gmail.com"
+#define USER_PASS "Belser!26"
+
+// User functions
+void processData(AsyncResult &aResult);
+
+// Authentication
+UserAuth user_auth(Web_API_KEY, USER_EMAIL, USER_PASS);
+
+// Firebase components
+FirebaseApp app;
+WiFiClientSecure ssl_client;
+using AsyncClient = AsyncClientClass;
+AsyncClient aClient(ssl_client);
+RealtimeDatabase Database;
+
+// Timer variables for sending data every 60 seconds
+unsigned long lastSendTime = 0;
+const unsigned long sendInterval = 60000; // 60 seconds in milliseconds
+
+// Variable to save USER UID
+String uid;
+
+// Database main path (to be updated in setup with the user UID)
+String databasePath;
+// Database child nodes
+String timePath = "/timestamp";
+String tempPath = "/temperature";
+String heartratePath = "/heartrate"
+String spo2Path = "/spo2"
+
+// Parent Node (to be updated in every loop)
+String parentPath;
+
+int timestamp;
+
+const char* ntpServer = "pool.ntp.org";
+
+
+
+/*Replace with sensor names
+Adafruit_BME280 bme; // I2C
+*/
+
+
+float temperature;
+float heartrate;
+float spo2;
+
+// Create JSON objects for storing data
+object_t jsonData, obj1, obj2, obj3, obj4;
+JsonWriter writer;
+
+
+
+
+/* Replace with initialization of each sensor
+// Initialize BME280
+void initBME(){
+  if (!bme.begin(0x76)) {
+    Serial.println("Could not find a valid BME280 sensor, check wiring!");
+    while (1);
+  }
+}
+*/
+
+
+
+
+// Initialize WiFi
+void initWiFi() {
+  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+  Serial.print("Connecting to WiFi ..");
+  while (WiFi.status() != WL_CONNECTED) {
+    Serial.print('.');
+    delay(1000);
+  }
+}
+
+// Function that gets current epoch time
+unsigned long getTime() {
+  time_t now;
+  struct tm timeinfo;
+  if (!getLocalTime(&timeinfo)) {
+    //Serial.println("Failed to obtain time");
+    return(0);
+  }
+  time(&now);
+  return now;
+}
+
+void setup(){
+  Serial.begin(115200);
+
+
+
+  /* Initialize each sensor in this block
+  //initBME(); 
+  */
+
+
+
+  initWiFi();
+  configTime(0, 0, ntpServer);
+
+  // Configure SSL client
+  ssl_client.setInsecure();
+  ssl_client.setConnectionTimeout(1000);
+  ssl_client.setHandshakeTimeout(5);
+
+  // Initialize Firebase
+  initializeApp(aClient, app, getAuth(user_auth), processData, "🔐 authTask");
+  app.getApp<RealtimeDatabase>(Database);
+  Database.url(DATABASE_URL);
+}
+
+void loop(){
+  // Maintain authentication and async tasks
+  app.loop();
+
+  // Check if authentication is ready
+  if (app.ready()){
+
+    // Periodic data sending every 60 seconds
+    unsigned long currentTime = millis();
+    if (currentTime - lastSendTime >= sendInterval){
+      // Update the last send time
+      lastSendTime = currentTime;
+
+      uid = app.getUid().c_str();
+
+      // Update database path
+      databasePath = "/readings/" + uid;
+
+      //Get current timestamp
+      timestamp = getTime();
+      Serial.print ("time: ");
+      Serial.println (timestamp);
+
+      parentPath= databasePath + "/" + String(timestamp);
+
+
+
+      // Get sensor readings
+      /* Update with functions for reading values from sensors
+      temperature = bme.readTemperature();
+      heartrate = bme.readHumidity();
+      spo2 = bme.readPressure()/100.0;
+      */
+
+
+
+      // Create a JSON object with the data
+      //Comment out any module that hasn't been tested and remove it from the "writer.join". Also update the number of variables being sent to the database if something is removed.
+      writer.create(obj1, timePath, timestamp);
+      writer.create(obj2, tempPath, temperature);
+      writer.create(obj3, heartratePath, heartrate);
+      writer.create(obj4, spo2Path, spo2);
+      writer.join(jsonData, 4, obj1, obj2, obj3, obj4);
+
+      Database.set<object_t>(aClient, parentPath, jsonData, processData, "RTDB_Send_Data");
+    }
+  }
+}
+
+void processData(AsyncResult &aResult){
+  if (!aResult.isResult())
+    return;
+
+  if (aResult.isEvent())
+    Firebase.printf("Event task: %s, msg: %s, code: %d\n", aResult.uid().c_str(), aResult.eventLog().message().c_str(), aResult.eventLog().code());
+
+  if (aResult.isDebug())
+    Firebase.printf("Debug task: %s, msg: %s\n", aResult.uid().c_str(), aResult.debug().c_str());
+
+  if (aResult.isError())
+    Firebase.printf("Error task: %s, msg: %s, code: %d\n", aResult.uid().c_str(), aResult.error().message().c_str(), aResult.error().code());
+
+  if (aResult.available())
+    Firebase.printf("task: %s, payload: %s\n", aResult.uid().c_str(), aResult.c_str());
+}

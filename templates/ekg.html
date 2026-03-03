@@ -11,10 +11,15 @@
     <body>
         <nav class="navbar">
             <ul>
-                <li><a href="{{ url_for('home') }}">Home</a></li>
+                <li><a href="{{ url_for('dashboard') }}">Home</a></li>
                 <li><a href="{{ url_for('ekg') }}">EKG</a></li>
-                <li><a href="{{ url_for('temp') }}">Body Temperature</a></li>
-                <li><a href="{{ url_for('hr') }}">Heart Rate</a></li>
+                <div class="dropdown">
+                    <button class="dropbtn">Account</button>
+                    <div class="dropdown-content" id="drop-options">
+                        <a href="#" class="item" data-value="account">Account Details</a>
+                        <a href="#" class="item" data-value="logout" id="logout">Logout</a>
+                    </div>
+                </div>
             </ul>
 
         </nav>
