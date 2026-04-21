@@ -5,12 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Vital Tracker Web Server</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 
 <body id="authentication">
     <div class="container">
-        <div class="form-box" id="login-form">
+        <div class="form-box active" id="login-form">
             <form id="login">
                 <h2>Login</h2>
                 <input type="email" id="login-email" placeholder="Email" required>
@@ -20,7 +20,7 @@
             </form>
         </div>
     
-        <div class="form-box active" id="register-form">
+        <div class="form-box" id="register-form">
             <form id="register">
                 <h2>Register</h2>
                 <input type="email" id="register-email" placeholder="Email" required>
@@ -37,7 +37,7 @@
         </div>
     </div>
     
-    <script type="module" src="{{ url_for('static', filename='auth.js') }}"></script>
+    <script type="module" src="{{ url_for('static', filename='js/auth.js') }}"></script>
 </body>
 
 </html>

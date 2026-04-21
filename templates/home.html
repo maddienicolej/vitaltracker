@@ -3,25 +3,21 @@
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title> Vital Tracker Web Server</title>
-        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     </head>
-    <header>
-        <h1> Vital Tracker</h1> 
-    </header>
+
     <body>
-        <nav class="navbar">
-            <ul>
+        <nav>
+            <a href="startup.html"><img src="{{ url_for('static', filename='img/tsplogo.png') }}"></a>
+            <div class="navbar">
+                <ul>
                 <li><a href="{{ url_for('dashboard') }}">Home</a></li>
                 <li><a href="{{ url_for('ekg') }}">EKG</a></li>
-                <div class="dropdown">
-                    <button class="dropbtn">Account</button>
-                    <div class="dropdown-content" id="drop-options">
-                        <a href="#" class="item" data-value="account">Account Details</a>
-                        <a href="#" class="item" data-value="logout" id="logout">Logout</a>
-                    </div>
+                <li><a href="#" class="item" data-value="logout" id="logout">Logout</a></li>
+                    
                 </div>
             </ul>
-
+            </div>
         </nav>
             
         <main>
@@ -35,6 +31,6 @@
             </p>
         </main>
 
-      <script type="module" src="{{ url_for('static', filename='logout.js') }}"></script>
+      <script type="module" src="{{ url_for('static', filename='js/logout.js') }}"></script>
     </body>
 </html>

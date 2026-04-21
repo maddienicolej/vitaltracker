@@ -3,24 +3,20 @@
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title> Vital Tracker Web Server</title>
-        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     </head>
     <body>
 
-    <header>
-        <h1> Vital Tracker</h1> 
-    </header>
-
-        <div class="login-dropdown">
-            <button class="profile">
-              <i class="material-icons">person</i>  
-            </button>
-            <div class="dropdown-content" id="drop-options">
-                <button id="login-btn">Sign In</button>
-            </div>
-        </div>
-    
+        <nav>
+            <img src="{{ url_for('static', filename='img/tsplogo.png') }}">
+            <div class="login-dropdown">
+                <button class="profile" id="login-btn">
+                    <i class="material-icons">person</i>  
+                </button>
+            </div>  
+        </nav>
+        
         <main>
             <h3>Welcome to the Vital Tracker Web Server!</h3>
             <p>
@@ -28,10 +24,10 @@
                 that continuously tracks key vital signs while minimizing disturbances from traditional practices and devices.
                 The system securely transmits real-time data to healthcare providers, allowing nurses and doctors to remotely
                 monitor overnight patients, respond faster to changes, and improve overall patient comfort and care effieciency. <br>
-                For any technical issues with the site, please email vitaltracker2026@gmail.com
+                For any technical issues with the site, please email [ vitaltracker2026@gmail.com ]
             </p>
         </main>
 
-    <script type="module" src="{{ url_for('static', filename='login.js') }}"></script>
+    <script type="module" src="{{ url_for('static', filename='js/login.js') }}"></script>
     </body>
 </html>

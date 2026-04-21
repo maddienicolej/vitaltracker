@@ -12,20 +12,15 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    const dropdown = document.getElementById('drop-options');
-    dropdown.addEventListener("click", (e) => {
-        const item = e.target.closest(".item");
-        if (!item) return;
-
-        e.preventDefault();
-
-        if (item.dataset.value === "logout") {
+    const logout = document.getElementById('logout');
+    logout.addEventListener("click", (e) => {
+        console.log('List item was clicked');
         signOut(auth).then(() => {
         }).catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
         console.error("Account logout failed:", errorMessage);
         })
-        }     
+        
     });
 });

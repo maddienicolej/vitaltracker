@@ -1,40 +1,68 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title> Vital Tracker Web Server</title>
-        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+        <link rel="icon" type="image/x-icon" href="/favicon.ico">
     </head>
-    <header>
-        <h1> Vital Tracker</h1> 
-    </header>
+
     <body>
-        <nav class="navbar">
-            <ul>
+        <nav>
+            <a href="startup.html"><img src="{{ url_for('static', filename='img/tsplogo.png') }}"></a>
+            <div class="navbar">
+                <ul>
                 <li><a href="{{ url_for('dashboard') }}">Home</a></li>
                 <li><a href="{{ url_for('ekg') }}">EKG</a></li>
-                <div class="dropdown">
-                    <button class="dropbtn">Account</button>
-                    <div class="dropdown-content" id="drop-options">
-                        <a href="#" class="item" data-value="account">Account Details</a>
-                        <a href="#" class="item" data-value="logout" id="logout">Logout</a>
-                    </div>
+                <li><a href="#" class="item" data-value="logout" id="logout">Logout</a></li>
+                    
                 </div>
             </ul>
-
+            </div>
         </nav>
             
-        <main>
-            <label for="patients"> Patient:</label>
-            <select name="patients" id="patients">
-                <option value="P1">Madison Jones</option>
-                <option value="P2">Mariah Williams</option>
-            </select>
-            <button type="submit" name="Submit">Submit
-        </main>
+        <div class="modules">
+
+            <div class="fall-detection" id="mpu-popup">
+                <div class="popup-content">
+                    <h2>URGENT:<br>Fall Detected!</h2>
+                    <p> The Vital Tracker has detected a fall from your patient. Attend to their room immediately.</p>
+                    <button id="mpuBtn">Close</button>
+                </div>
+            </div>
+
+            <div class="temp-spike" id="temp-popup">
+                <div class="popup-content">
+                    <h2>URGENT:<br>Temperature Spike!</h2>
+                    <p id="tempTime"> The Vital Tracker has detected a spike in temperature. Attend to their room immediately.</p>
+                    <button id="tempBtn">Close</button>
+                </div>
+            </div>
+            
+            <div class="display-box">
+                <label>Body Temperature:</label>
+                <p id="temp">Unavailable</p>
+            </div>
+
+            <div class="display-box">
+                <label>Heart Rate:</label>
+                <p id="bpm">Unavailable</p>
+            </div>
+
+        </div>
+
+        <div class="chart-container">
+            <canvas id="myChart"></canvas>
+        </div>
+
         <p>
-            This is the EKG page. EKG data will be recieved from the ESP32 and graphically displayed here.<br>
-            Features may be added later to allow doctors to view multiple patients with the dropdown menu.
+            This is the EKG page. EKG data will be recieved from the ESP32 and graphically displayed here.
         </p>
+        
+    
+    <script type="module" src="{{ url_for('static', filename='js/firebase.js') }}"></script>
+    <script type="module" src="{{ url_for('static', filename='js/ekg.js') }}"></script>
+    <script type="module" src="{{ url_for('static', filename='js/logout.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     </body>
 </html>
