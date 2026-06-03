@@ -1,0 +1,6 @@
+key.json
+.env
+__pycache__/
+*.pyc
+venv/
+static/js/firebase.js
