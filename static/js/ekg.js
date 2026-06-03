@@ -10,19 +10,21 @@ let timeIndex = 0;
 
 onValue(statusRef, (snapshot) => {
   const flagdata = snapshot.val();
-  const mpuTime = flagdata.mpuTime;
-  const mpuLabel = new Date(mpuTime * 1000);
+  const fallTime = flagdata.fallTime;
+  const mpuLabel = new Date(fallTime * 1000);
   console.log(mpuLabel.toLocaleString());
   //show pop-up alert if fall is detected
   const mpuAlert = document.getElementById('mpu-popup');
   if (flagdata.mpuBool == true) {
     mpuAlert.style.display = 'block';
+    document.getElementById("mpuTime").textContent = "The Vital Tracker has detected a fall from your patient at " + mpuLabel.toLocaleString() + ". Attend to their room immediately."
   }
   
   document.getElementById('mpuBtn').onclick = () => {
     mpuAlert.style.display = 'none';
     //update bool to false in database after closing pop-up
     set(statusRef, {
+      tempBool: false,
       mpuBool: false
     });
   };
@@ -40,7 +42,8 @@ onValue(statusRef, (snapshot) => {
     tempAlert.style.display = 'none';
     //update bool to false in database after closing pop-up
     set(statusRef, {
-      tempBool: false
+      tempBool: false,
+      mpuBool: false
     });
   };
 
@@ -57,16 +60,6 @@ onValue(dataRef, (snapshot) => {
 
   const latestTimestamp = Object.keys(data).pop();
   const latestReading = data[latestTimestamp];
-  /*let ekgPoints = [];
-  snapshot.forEach((parentSnapshot) => {
-    if (parentSnapshot.child('ekg').exists()) {
-      const ekgData = parentSnapshot.child('ekg').val().split(',').map(Number);
-      ekgPoints = ekgPoints.concat(ekgData);
-      //ekgPoints = ekgPoints.split(',').map(Number);
-      console.log("Found child data:", ekgPoints);
-    }
-  });
-  */
   const ekgPoints = latestReading.ekg.split(',').map(Number);
 
   const formattedEKG = ekgPoints.map((value, index) => ({
